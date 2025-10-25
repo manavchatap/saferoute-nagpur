@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // Replace with your actual backend URL
-const API_BASE_URL = 'https://YOUR-BACKEND-URL-HERE.onrender.com';
+const API_BASE_URL = 'https://saferoute-nagpur-api.onrender.com';
 
 export const api = axios.create({
   baseURL: API_BASE_URL,
