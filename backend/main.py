@@ -265,3 +265,15 @@ async def get_heatmap_data():
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8000, reload=True)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "http://localhost:5173",
+        "https://saferoute-nagpur.vercel.app",  # Your Vercel URL
+        "https://*.vercel.app",  # All Vercel deployments
+    ],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)

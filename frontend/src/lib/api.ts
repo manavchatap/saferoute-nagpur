@@ -1,8 +1,9 @@
 import axios from 'axios';
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+// Replace with your actual backend URL
+const API_BASE_URL = 'https://YOUR-BACKEND-URL-HERE.onrender.com';
 
-const api = axios.create({
+export const api = axios.create({
   baseURL: API_BASE_URL,
   headers: {
     'Content-Type': 'application/json',
@@ -10,67 +11,31 @@ const api = axios.create({
 });
 
 export const getBlackSpots = async () => {
-  const response = await api.get('/blackspots');
-  return response.data;
-};
-
-export const getStatistics = async () => {
-  const response = await api.get('/stats');
-  return response.data;
-};
-
-export const predictRouteSafety = async (origin: any, destination: any) => {
-  const response = await api.post('/predict/route', {
-    origin,
-    destination,
-  });
-  return response.data;
-};
-
-export const getHeatmapData = async () => {
-  const response = await api.get('/accidents/heatmap');
-  return response.data;
-};
-
-// Geocoding function using OpenStreetMap Nominatim
-export const geocodeAddress = async (address: string) => {
   try {
-    const response = await axios.get('https://nominatim.openstreetmap.org/search', {
-      params: {
-        q: `${address}, Nagpur, Maharashtra, India`,
-        format: 'json',
-        limit: 5,
-        countrycodes: 'in'
-      },
-      headers: {
-        'User-Agent': 'NagpurAccidentPredictor/1.0'
-      }
-    });
-    
+    const response = await api.get('/blackspots');
     return response.data;
   } catch (error) {
-    console.error('Geocoding error:', error);
-    return [];
+    console.error('Failed to fetch blackspots:', error);
+    throw error;
   }
 };
 
-// Reverse geocoding (lat/lng to address)
-export const reverseGeocode = async (lat: number, lng: number) => {
+export const getStatistics = async () => {
   try {
-    const response = await axios.get('https://nominatim.openstreetmap.org/reverse', {
-      params: {
-        lat,
-        lon: lng,
-        format: 'json',
-      },
-      headers: {
-        'User-Agent': 'NagpurAccidentPredictor/1.0'
-      }
-    });
-    
+    const response = await api.get('/stats');
     return response.data;
   } catch (error) {
-    console.error('Reverse geocoding error:', error);
-    return null;
+    console.error('Failed to fetch statistics:', error);
+    throw error;
+  }
+};
+
+export const predictRoute = async (origin: any, destination: any) => {
+  try {
+    const response = await api.post('/predict/route', { origin, destination });
+    return response.data;
+  } catch (error) {
+    console.error('Failed to predict route:', error);
+    throw error;
   }
 };
