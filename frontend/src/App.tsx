@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import './App.css';
 import Header from './components/Header';
 import Map from './components/Map';
@@ -8,7 +8,6 @@ import RecentReports from './components/RecentReports';
 import EmergencyServices from './components/EmergencyServices';
 import Analytics from './components/Analytics';
 import ZoneAnalysis from './components/ZoneAnalysis';
-import { getBlackSpots, getStatistics } from './lib/api';
 
 interface BlackSpot {
   name: string;
@@ -18,50 +17,87 @@ interface BlackSpot {
   description: string;
 }
 
-interface Statistics {
-  total_accidents: number;
-  total_blackspots: number;
-  zones: { [key: string]: number };
-  last_updated: string;
-  user_reports_count?: number;
-}
+// Hardcoded black spots data
+const BLACKSPOTS_DATA: BlackSpot[] = [
+  {
+    name: "Prakash High School to Kapsi Bridge (Pardi)",
+    location: { lat: 21.0891, lng: 79.0641 },
+    accident_count: 15,
+    zone: "Pardi",
+    description: "High-speed corridor with frequent two-wheeler accidents during peak hours"
+  },
+  {
+    name: "Automotive Square Junction (Indora)",
+    location: { lat: 21.1458, lng: 79.0882 },
+    accident_count: 14,
+    zone: "Indora",
+    description: "Heavy traffic junction with poor visibility and multiple vehicle collisions"
+  },
+  {
+    name: "Sitabuldi Main Road (Sitabuldi)",
+    location: { lat: 21.1466, lng: 79.0882 },
+    accident_count: 13,
+    zone: "Sitabuldi",
+    description: "Congested commercial area with pedestrian-vehicle conflicts"
+  },
+  {
+    name: "Ajni Railway Station Road (Ajni)",
+    location: { lat: 21.1433, lng: 79.1194 },
+    accident_count: 12,
+    zone: "Ajni",
+    description: "Railway crossing area with frequent delays causing risky overtaking"
+  },
+  {
+    name: "Seminary Hills Flyover (Dharampeth)",
+    location: { lat: 21.1373, lng: 79.0608 },
+    accident_count: 11,
+    zone: "Dharampeth",
+    description: "High-speed flyover with sharp curves and poor lighting at night"
+  },
+  {
+    name: "Variety Square to LAD College (Dhantoli)",
+    location: { lat: 21.1518, lng: 79.0826 },
+    accident_count: 10,
+    zone: "Dhantoli",
+    description: "Narrow roads with heavy student traffic and parking issues"
+  },
+  {
+    name: "Khamla Square Junction",
+    location: { lat: 21.1201, lng: 79.1025 },
+    accident_count: 9,
+    zone: "Khamla",
+    description: "Multi-way junction with inadequate traffic signals"
+  },
+  {
+    name: "Sadar Market Area",
+    location: { lat: 21.1505, lng: 79.0842 },
+    accident_count: 8,
+    zone: "Sadar",
+    description: "Congested market with pedestrian overflow and two-wheeler dominance"
+  }
+];
+
+const STATS_DATA = {
+  total_accidents: 328,
+  total_blackspots: 23,
+  zones: {
+    "Pardi": 48,
+    "Indora": 44,
+    "Sitabuldi": 40,
+    "Ajni": 46,
+    "Dharampeth": 38,
+    "Dhantoli": 32,
+    "Sadar": 28,
+    "Khamla": 24
+  },
+  last_updated: '2025-10-26',
+  user_reports_count: 0
+};
 
 function App() {
   const [selectedSpot, setSelectedSpot] = useState<BlackSpot | null>(null);
-  const [blackspots, setBlackspots] = useState<BlackSpot[]>([]);
-  const [stats, setStats] = useState<Statistics | null>(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    fetchData();
-  }, []);
-
-  const fetchData = async () => {
-    try {
-      const [spotsData, statsData] = await Promise.all([
-        getBlackSpots(),
-        getStatistics(),
-      ]);
-      setBlackspots(spotsData);
-      setStats(statsData);
-    } catch (err) {
-      console.error('Error fetching data:', err);
-      // Data will fall back to mock data from api.ts
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  if (loading) {
-    return (
-      <div className="app-container" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh' }}>
-        <div style={{ textAlign: 'center' }}>
-          <h2>Loading SafeRoute Nagpur...</h2>
-          <p>Connecting to safety platform...</p>
-        </div>
-      </div>
-    );
-  }
+  const blackspots = BLACKSPOTS_DATA;
+  const stats = STATS_DATA;
 
   return (
     <div className="app-container">
@@ -75,15 +111,15 @@ function App() {
           </p>
           <div className="hero-stats">
             <div className="hero-stat">
-              <div className="hero-stat-value">{stats?.total_accidents || 328}</div>
+              <div className="hero-stat-value">{stats.total_accidents}</div>
               <div className="hero-stat-label">Accidents Analyzed</div>
             </div>
             <div className="hero-stat">
-              <div className="hero-stat-value">{stats?.total_blackspots || 23}</div>
+              <div className="hero-stat-value">{stats.total_blackspots}</div>
               <div className="hero-stat-label">Black Spots</div>
             </div>
             <div className="hero-stat">
-              <div className="hero-stat-value">{stats?.user_reports_count || 0}</div>
+              <div className="hero-stat-value">{stats.user_reports_count}</div>
               <div className="hero-stat-label">Community Reports</div>
             </div>
             <div className="hero-stat">
@@ -183,7 +219,7 @@ function App() {
           </div>
         </div>
         <div className="footer-bottom">
-          <p>© 2025 SafeRoute Nagpur. Built for safer roads. | Last Updated: {stats?.last_updated || '2025-10-25'}</p>
+          <p>© 2025 SafeRoute Nagpur. Built for safer roads. | Last Updated: {stats.last_updated}</p>
         </div>
       </footer>
     </div>
