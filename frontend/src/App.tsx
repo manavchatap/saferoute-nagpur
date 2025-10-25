@@ -31,7 +31,6 @@ function App() {
   const [blackspots, setBlackspots] = useState<BlackSpot[]>([]);
   const [stats, setStats] = useState<Statistics | null>(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
 
   useEffect(() => {
     fetchData();
@@ -45,10 +44,9 @@ function App() {
       ]);
       setBlackspots(spotsData);
       setStats(statsData);
-      setError('');
     } catch (err) {
       console.error('Error fetching data:', err);
-      setError('Failed to connect to backend. Make sure backend is running on port 8000.');
+      // Data will fall back to mock data from api.ts
     } finally {
       setLoading(false);
     }
@@ -97,35 +95,24 @@ function App() {
       </div>
 
       <main className="main-content">
-        {error && (
-          <div style={{ backgroundColor: '#fee2e2', border: '2px solid #ef4444', borderRadius: '0.75rem', padding: '1rem', marginBottom: '1.5rem', maxWidth: '1280px', margin: '0 auto 1.5rem' }}>
-            <p style={{ color: '#7f1d1d', fontSize: '0.875rem', margin: 0 }}>WARNING: {error}</p>
-          </div>
-        )}
-
-        {/* Analytics Section with ID */}
         <div id="analytics">
           <Analytics />
           <ZoneAnalysis />
         </div>
 
-        {/* Route Safety Section with ID */}
         <div id="route-safety">
           <RouteSafety />
         </div>
 
-        {/* Emergency Section with ID */}
         <div id="emergency">
           <EmergencyServices />
         </div>
 
-        {/* Report Section with ID */}
         <div id="report">
           <ReportAccident />
           <RecentReports />
         </div>
 
-        {/* Map Section */}
         <div className="map-grid">
           <div className="map-section">
             <h2 className="section-title">Accident Hotspot Map</h2>
