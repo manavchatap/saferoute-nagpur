@@ -1,9 +1,16 @@
+import { Link, useLocation } from 'react-router-dom';
+
 export default function Header() {
+  const location = useLocation();
+  
+  const isActive = (path: string) => {
+    return location.pathname === path ? 'nav-link-active' : '';
+  };
+
   return (
     <header className="professional-header">
       <div className="header-container">
-        <div className="logo-section">
-          {/* Custom Logo Icon */}
+        <Link to="/" className="logo-section">
           <div className="logo-icon-svg">
             <svg width="50" height="50" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
               <rect width="50" height="50" rx="12" fill="url(#gradient)"/>
@@ -17,18 +24,31 @@ export default function Header() {
               </defs>
             </svg>
           </div>
-          
           <div className="logo-text">
             <h1 className="logo-title">SafeRoute</h1>
             <p className="logo-subtitle">Nagpur</p>
           </div>
-        </div>
+        </Link>
         
         <nav className="nav-menu">
-          <a href="#analytics" className="nav-link">Analytics</a>
-          <a href="#route-safety" className="nav-link">Route Safety</a>
-          <a href="#report" className="nav-link">Report</a>
-          <a href="#emergency" className="nav-link emergency-btn">Emergency</a>
+          <Link to="/" className={`nav-link ${isActive('/')}`}>
+            Home
+          </Link>
+          <Link to="/analytics" className={`nav-link ${isActive('/analytics')}`}>
+            Analytics
+          </Link>
+          <Link to="/route-safety" className={`nav-link ${isActive('/route-safety')}`}>
+            Route Safety
+          </Link>
+          <Link to="/hotspots" className={`nav-link ${isActive('/hotspots')}`}>
+            Hotspots
+          </Link>
+          <Link to="/report" className={`nav-link ${isActive('/report')}`}>
+            Report
+          </Link>
+          <Link to="/emergency" className={`nav-link emergency-btn ${isActive('/emergency')}`}>
+            Emergency
+          </Link>
         </nav>
       </div>
     </header>

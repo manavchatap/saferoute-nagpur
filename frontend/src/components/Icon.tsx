@@ -7,24 +7,24 @@ interface IconProps {
 
 export default function Icon({ type, className = '' }: IconProps) {
   const icons: { [key: string]: string } = {
-    location: 'í³',
+    location: 'ğŸ“',
     warning: 'âš ï¸',
-    vehicle: 'íº—',
-    people: 'í±¥',
-    camera: 'í³·',
-    folder: 'í³',
-    video: 'í¾¥',
-    photo: 'í³¸',
-    note: 'í³',
-    user: 'í±¤',
+    vehicle: 'ğŸš•',
+    people: 'ğŸ‘¥',
+    camera: 'ğŸ“·',
+    folder: 'ğŸ“',
+    video: 'ğŸ“¸',
+    photo: 'ğŸ“·',
+    note: 'ğŸ—’ï¸',
+    user: 'ğŸ‘¤',
     phone: 'â˜ï¸',
-    success: 'âœ“',
+    success: 'âœ…',
     loading: 'â³',
-    hospital: 'í¿¥',
-    police: 'í±®',
-    fire: 'íº’',
-    ambulance: 'íº‘',
-    alert: 'íº¨'
+    hospital: 'ğŸ¥',
+    police: 'ğŸ‘®',
+    fire: 'ğŸ”¥',
+    ambulance: 'ğŸš‘',
+    alert: 'ğŸš¨'
   };
 
   return (
